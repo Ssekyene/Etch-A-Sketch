@@ -7,29 +7,39 @@
 
 body {
     padding-top: 20px;
-    background-color: #0E0E0E;
+    background-color: #181818;
+    font-family: "Lucida Console", "Courier New", monospace;
 }
 
 .container {
     background-color: rgb(236, 14, 13);
     width: 820px;
     height: 680px;
+    border-radius: 8px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.screen {
+.grid {
     background-color: #fefefe;
     width: 76%;
     height: 76%;
-    
-    
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .title {
     font-size: 30px;
     text-align: center;
     padding: 20px;
+}
+
+.pixel {
+    flex-shrink: 0;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    
 }
