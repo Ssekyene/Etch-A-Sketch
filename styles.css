@@ -28,6 +28,8 @@ body {
     height: 76%;
     display: flex;
     flex-direction: column;
+    border: 4px solid #200606;
+    border-radius: 6px;
 }
 
 .title {
@@ -37,7 +39,7 @@ body {
 }
 
 .pixel {
-    outline: 1px solid #000;
+    outline: 1px solid #ddd;
 }
 
 .row {
