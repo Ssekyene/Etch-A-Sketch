@@ -27,8 +27,7 @@ body {
     width: 76%;
     height: 76%;
     display: flex;
-    align-content: flex-start;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .title {
@@ -38,8 +37,14 @@ body {
 }
 
 .pixel {
-    flex-shrink: 0;
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
-    
+    outline: 1px solid #000;
+}
+
+.row {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+.col {
+    flex: 1 1 auto;
 }
