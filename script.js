@@ -20,52 +20,130 @@ const colorPicker = document.querySelector('#colorPicker');
 const resolutionInput = document.querySelector('#resolutionInput');
 const xResolutionValue = document.querySelector('#xResolutionValue');
 const yResolutionValue = document.querySelector('#yResolutionValue');
+const clearBtn = document.querySelector('#clearBtn');
+const eraserToggler = document.querySelector('#eraserToggler');
+
+let pixelColor = colorPicker.value;
 
 
 createGrid(resolutionInput.value);
-createGridShadingEffect(colorPicker.value);
 
-/** END GLOBAL SCOPE **/
+const pixels = document.querySelectorAll('.col');
 
-resolutionInput.addEventListener('input', (e) => {
-  grid.innerHTML = '';
-  xResolutionValue.textContent = resolutionInput.value;
-  yResolutionValue.textContent = resolutionInput.value;
-  createGrid(resolutionInput.value);
-  createGridShadingEffect(colorPicker.value);
+// pick the mousedown event through event bubbling
+grid.addEventListener('mousedown', shadeOnMousedown);
+// apply the mouseenter listener on each individual pixel
+pixels.forEach(pixel => {
+  pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+});
+
+colorPicker.addEventListener('input', e => {
+  pixelColor = colorPicker.value;
+});
+
+clearBtn.addEventListener('click', (e) => {
+  const pixels = document.querySelectorAll('.col');
+  pixels.forEach(pixel => {
+    pixel.style.backgroundColor = '';
+  });
 });
 
 
-// creates a shading effect to all pixels in the grid
-function createGridShadingEffect(pixelColor) {
+resolutionInput.addEventListener('input', (e) => {
+  grid.innerHTML = ''; // clear the recent grid
+  xResolutionValue.textContent = resolutionInput.value;
+  yResolutionValue.textContent = resolutionInput.value;
+  createGrid(resolutionInput.value);
+  // reapply the mouseenter event listener on each individual pixel as before
+  const pixels = document.querySelectorAll('.col');
+  pixels.forEach(pixel => {
+    pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+  });
+});
+
+// this toggles the event handlers for erasing with those for shading/drawing
+eraserToggler.addEventListener('click', e => {
+  const pixels = document.querySelectorAll('.col');
+  if (eraserToggler.textContent === 'Eraser') {
+    eraserToggler.textContent = 'Draw';
+    grid.removeEventListener('mousedown', shadeOnMousedown);
+    grid.addEventListener('mousedown', eraseOnMousedown);
+    
+    pixels.forEach(pixel => {
+      pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+      pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+    });
+
+  } else {
+    eraserToggler.textContent = 'Eraser';
+    grid.removeEventListener('mousdown', eraseOnMousedown);
+    grid.addEventListener('mousedown', shadeOnMousedown);
+    
+    pixels.forEach(pixel => {
+      pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+      pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+    });
+  }
+});
+
+/** END GLOBAL SCOPE **/
+
+
+function shadeOnMousedown(e) {
+  if (e.button === 0) // 0 represents the left button
+    e.preventDefault();
+  setPixelFillColor(e.target, pixelColor);
+}
+
+function shadeOnHoverWithLeftButtonDown (e) {
+  // 1 represents the left button when using the `buttons` (not `button`) property
+  if (e.buttons === 1) {
+    setPixelFillColor(e.target, pixelColor);
+  }
+}
+
+
+
+// function shadeOnMousedown(e) {
+//   // prevent the left button from dragging
+//   if (e.button === 0) // 0 represents the left button
+//     e.preventDefault();
+//   setPixelFillColor(e.target, pixelColor);
+// }
+
+
+function createGridErasingEffect() {
   const rows = Array.from(grid.children);
   for (const row of rows) {
     cols = Array.from(row.children);
     cols.forEach(col => {
-      col.addEventListener('mousedown', e => {
-        // prevent the left button from dragging
-        if (e.button === 0) // 0 represents the left button
-          e.preventDefault();
-        setPixelFillColor(col, pixelColor);
-      });    
-      col.addEventListener('mouseenter', e => {
-        // shade the pixel if the left button is held down while hovering over it
-        if (e.buttons === 1) { // 1 represents the left button when using the `buttons` (not `button`) property
-          setPixelFillColor(col, pixelColor);
-        }
-      });
-    
+      col.addEventListener('mousedown', eraseOnMousedown);    
+      col.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
     });
   }
+}
 
+function eraseOnMousedown(e) {
+  // prevent the left button from dragging
+  if (e.button === 0) // 0 represents the left button
+    e.preventDefault();
+  erasePixel(e.target);
+}
+
+function eraseOnHoverWithLeftButtonDown (e) {
+  // 1 represents the left button when using the `buttons` (not `button`) property
+  if (e.buttons === 1) {
+     erasePixel(e.target);
+  }
 }
 
 
-colorPicker.addEventListener('input', e => {
-  createGridShadingEffect(colorPicker.value);
-});
+function erasePixel(pixelElem) {
+  pixelElem.style.backgroundColor = '';
+}
+
 
 
 function setPixelFillColor (pixelElem, fillColor) {
-  pixelElem.style.backgroundColor = fillColor;
+    pixelElem.style.backgroundColor = fillColor;
 }

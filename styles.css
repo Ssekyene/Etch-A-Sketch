@@ -22,6 +22,18 @@ body {
     align-items: center;
 }
 
+button {
+    padding: 5px 10px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+input:hover {
+    cursor: pointer;
+}
+
 .grid {
     background-color: #fefefe;
     width: 76%;
