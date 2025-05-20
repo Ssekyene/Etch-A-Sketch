@@ -17,11 +17,24 @@ function createGrid(numOfSquares) {
 /** GLOBAL SCOPE **/
 const grid = document.querySelector('#grid');
 const colorPicker = document.querySelector('#colorPicker');
+const resolutionInput = document.querySelector('#resolutionInput');
+const xResolutionValue = document.querySelector('#xResolutionValue');
+const yResolutionValue = document.querySelector('#yResolutionValue');
 
-createGrid(90);
+
+createGrid(resolutionInput.value);
 createGridShadingEffect(colorPicker.value);
 
 /** END GLOBAL SCOPE **/
+
+resolutionInput.addEventListener('input', (e) => {
+  grid.innerHTML = '';
+  xResolutionValue.textContent = resolutionInput.value;
+  yResolutionValue.textContent = resolutionInput.value;
+  createGrid(resolutionInput.value);
+  createGridShadingEffect(colorPicker.value);
+});
+
 
 // creates a shading effect to all pixels in the grid
 function createGridShadingEffect(pixelColor) {
@@ -47,9 +60,11 @@ function createGridShadingEffect(pixelColor) {
 
 }
 
+
 colorPicker.addEventListener('input', e => {
   createGridShadingEffect(colorPicker.value);
 });
+
 
 function setPixelFillColor (pixelElem, fillColor) {
   pixelElem.style.backgroundColor = fillColor;
