@@ -30,6 +30,10 @@ button:hover {
     cursor: pointer;
 }
 
+.cursor-crosshair:hover {
+    cursor: crosshair;
+}
+
 input:hover {
     cursor: pointer;
 }

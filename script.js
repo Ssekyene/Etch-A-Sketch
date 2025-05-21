@@ -56,16 +56,17 @@ resolutionInput.addEventListener('input', (e) => {
   createGrid(resolutionInput.value);
   // reapply the mouseenter event listener on each individual pixel as before
   const pixels = document.querySelectorAll('.col');
-  pixels.forEach(pixel => {
-    pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
-  });
-});
 
-// this toggles the event handlers for erasing with those for shading/drawing
-eraserToggler.addEventListener('click', e => {
-  const pixels = document.querySelectorAll('.col');
-  if (eraserToggler.textContent === 'Eraser') {
-    eraserToggler.textContent = 'Draw';
+  // apply drawing or erasing effects depending on the state of the eraser toggler btn
+  if (eraserToggler.textContent === 'Eraser') { // when drawing is activated
+    grid.addEventListener('mousedown', shadeOnMousedown);
+    grid.removeEventListener('mousedown', eraseOnMousedown);
+    
+    pixels.forEach(pixel => {
+      pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+      pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+    });
+  } else { // when erasing is activated
     grid.removeEventListener('mousedown', shadeOnMousedown);
     grid.addEventListener('mousedown', eraseOnMousedown);
     
@@ -73,11 +74,29 @@ eraserToggler.addEventListener('click', e => {
       pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
       pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
     });
+  }
+});
 
-  } else {
+// this toggles the event handlers for erasing with those for drawing
+eraserToggler.addEventListener('click', e => {
+  const pixels = document.querySelectorAll('.col');
+  // activate erasing
+  if (eraserToggler.textContent === 'Eraser') {
+    eraserToggler.textContent = 'Draw';
+    grid.removeEventListener('mousedown', shadeOnMousedown);
+    grid.addEventListener('mousedown', eraseOnMousedown);
+    grid.classList.add('cursor-crosshair');
+    
+    pixels.forEach(pixel => {
+      pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+      pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+    });
+
+  } else { // activate drawing
     eraserToggler.textContent = 'Eraser';
     grid.removeEventListener('mousdown', eraseOnMousedown);
     grid.addEventListener('mousedown', shadeOnMousedown);
+    grid.classList.remove('cursor-crosshair');
     
     pixels.forEach(pixel => {
       pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
