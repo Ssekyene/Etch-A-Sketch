@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
 *, *::after, *::before {   
     box-sizing: border-box;
     margin: 0;
@@ -20,6 +22,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 0 10px #E8E4DB;
+    border: 4px solid #200606;
 }
 
 button {
@@ -49,9 +53,15 @@ input:hover {
 }
 
 .title {
-    font-size: 30px;
+    font-family: "Dancing Script", cursive;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
     text-align: center;
     padding: 20px;
+    color: #E6F215;
+    text-shadow: 2px 2px 4px #1509CD;
 }
 
 .pixel {
@@ -65,4 +75,120 @@ input:hover {
 
 .col {
     flex: 1 1 auto;
+}
+
+.control-panel {
+    display: flex;
+    gap: 10px;
+    width: 76%;
+    padding: 20px;
+    
+}
+
+.control-panel > div {
+    text-align: center;
+    padding: 4px 0px 4px;
+    height: 60px;
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items: center;
+    flex: 1;
+    border-radius: 6px;
+    
+}
+
+#resolution-control, #color-control {
+    border: 2px groove #200606;
+}
+
+#color-control label:hover {
+    cursor: pointer;
+}
+
+#resolution-control {
+    flex: 2;
+}
+
+div.control-btn {
+    padding: 2px;
+    background-color: #fff;
+}
+
+input[type="range"] {
+    appearance: none;
+    width: 90%;
+    height: 4px;
+    border-radius: 4px;
+    outline: none;
+    margin-top: 15px;
+    
+}
+
+
+/* WebKit browsers (Chrome, Safari) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 30px;
+  width: 30px;
+  background: #200606;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+/* Firefox */
+/* Note: Firefox does not support the -webkit- prefix */
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  height: 30px;
+  width: 30px;
+  background: #200606;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+/* Edge */
+input[type="range"]::-ms-thumb {
+  height: 30px;
+  width: 30px;
+  background: #200606;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+input[type="color"] {
+    margin-top: 5px;
+    width: 90%;
+}
+
+
+.control-text {
+    display: block;
+    margin-bottom: -2px;
+    color: #E6F215;
+    font-size: 15px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px #1509CD;
+}
+
+.control-panel button {
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    font-weight: 700;
+    color: #E6F215;
+    background-color: #200606;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.control-panel button:hover {
+    background-color: #E6F215;
+    color: #200606;
 }
