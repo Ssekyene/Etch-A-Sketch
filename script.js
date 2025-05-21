@@ -103,15 +103,6 @@ function shadeOnHoverWithLeftButtonDown (e) {
 }
 
 
-
-// function shadeOnMousedown(e) {
-//   // prevent the left button from dragging
-//   if (e.button === 0) // 0 represents the left button
-//     e.preventDefault();
-//   setPixelFillColor(e.target, pixelColor);
-// }
-
-
 function createGridErasingEffect() {
   const rows = Array.from(grid.children);
   for (const row of rows) {
