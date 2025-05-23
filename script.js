@@ -22,7 +22,9 @@ const xResolutionValue = document.querySelector('#xResolutionValue');
 const yResolutionValue = document.querySelector('#yResolutionValue');
 const clearBtn = document.querySelector('#clearBtn');
 const eraserToggler = document.querySelector('#eraserToggler');
+const magicSketcher = document.querySelector('#magicSketcher');
 
+let magicColorFlag = false;
 let pixelColor = colorPicker.value;
 
 
@@ -80,6 +82,8 @@ resolutionInput.addEventListener('input', (e) => {
 // this toggles the event handlers for erasing with those for drawing
 eraserToggler.addEventListener('click', e => {
   const pixels = document.querySelectorAll('.col');
+
+  eraserToggler.classList.toggle('active-control');
   // activate erasing
   if (eraserToggler.textContent === 'Eraser') {
     eraserToggler.textContent = 'Draw';
@@ -105,19 +109,47 @@ eraserToggler.addEventListener('click', e => {
   }
 });
 
+
+magicSketcher.addEventListener('click', e => {
+  // toggle magic sketch activator flag
+  magicColorFlag = magicColorFlag === false ? true : false;
+  magicSketcher.classList.toggle('active-control');
+  // set sketching to default when magic flag is off
+  if (!magicColorFlag) {
+    magicSketcher.textContent = 'Magic Sketch off';
+    setPixelColorToDefault();
+    colorPicker.value = pixelColor;
+
+  } else {
+    magicSketcher.textContent = 'Magic Sketch on';
+  }
+});
 /** END GLOBAL SCOPE **/
 
 
 function shadeOnMousedown(e) {
-  if (e.button === 0) // 0 represents the left button
+  // 0 represents the left button
+  if (e.button === 0) {
     e.preventDefault();
-  setPixelFillColor(e.target, pixelColor);
+    if (magicColorFlag) {
+      setRandomPixelColor();
+      setPixelFillColor(e.target, pixelColor);
+    } else {
+      setPixelFillColor(e.target, pixelColor);
+    }
+  }
+
 }
 
 function shadeOnHoverWithLeftButtonDown (e) {
   // 1 represents the left button when using the `buttons` (not `button`) property
   if (e.buttons === 1) {
-    setPixelFillColor(e.target, pixelColor);
+    if (magicColorFlag) {
+      setRandomPixelColor();
+      setPixelFillColor(e.target, pixelColor);
+    } else {
+      setPixelFillColor(e.target, pixelColor);
+    }
   }
 }
 
@@ -156,4 +188,19 @@ function erasePixel(pixelElem) {
 
 function setPixelFillColor (pixelElem, fillColor) {
     pixelElem.style.backgroundColor = fillColor;
+}
+
+
+function setRandomPixelColor() {
+  let r, g, b;
+  // assign random different number between 0 and 256(exclusive) to
+  // red, green and blue variables
+  r = Math.floor(Math.random() * 256);
+  g = Math.floor(Math.random() * 256);
+  b = Math.floor(Math.random() * 256);
+  pixelColor = `rgb(${r}, ${g}, ${b})`;
+}
+
+function setPixelColorToDefault() {
+  pixelColor = '#000000';
 }

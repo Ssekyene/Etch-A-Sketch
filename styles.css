@@ -193,6 +193,11 @@ input[type="color"] {
     color: #200606;
 }
 
+button.active-control {
+    background-color: #E6F215;
+    color: #200606;
+}
+
 .footer {
     display: flex;
     justify-content: center;
@@ -201,4 +206,8 @@ input[type="color"] {
     color: #E6F215;
     font-size: 16px;
     background-color: rgba(24, 24, 24, 0.5);
+}
+
+.test {
+    background-color: rgb(236, 14, 13);
 }
