@@ -59,7 +59,7 @@ input:hover {
     font-style: normal;
     font-size: 50px;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
     color: #E6F215;
     text-shadow: 2px 2px 4px #1509CD;
 }
@@ -81,13 +81,12 @@ input:hover {
     display: flex;
     gap: 10px;
     width: 76%;
-    padding: 20px;
+    padding: 10px 10px 0;
     
 }
 
 .control-panel > div {
     text-align: center;
-    padding: 4px 0px 4px;
     height: 60px;
     /* border: 1px solid black; */
     display: flex;
@@ -99,8 +98,12 @@ input:hover {
     
 }
 
-#resolution-control, #color-control {
-    border: 2px groove #200606;
+#resolution-control {
+    width: 76%;
+    padding: 10px 0;
+}
+#color-control {
+    height: 73px;
 }
 
 #color-control label:hover {
@@ -164,18 +167,35 @@ input[type="range"]::-ms-thumb {
 }
 
 input[type="color"] {
-    margin-top: 5px;
-    width: 90%;
+    appearance: none;
+    -webkit-appearance: none;    /* Safari/Chrome */
+    border: 2px solid #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Remove default inner styling on WebKit (Chrome/Safari) */
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 
 .control-text {
     display: block;
-    margin-bottom: -2px;
+    margin-top: 12px;
     color: #E6F215;
     font-size: 15px;
     font-weight: 700;
     text-shadow: 2px 2px 4px #1509CD;
+    text-align: center;
 }
 
 .control-panel button {
