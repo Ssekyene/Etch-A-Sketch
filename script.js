@@ -118,6 +118,7 @@ magicSketchBtn.addEventListener('click', e => {
   if (smoothShadeFlag) {
     smoothShadeFlag = false;
     smoothShadeBtn.classList.remove('active-control');
+    smoothShadeBtn.textContent = 'Smooth Shading off';
   }
   // toggle magic sketching
   magicColorFlag = magicColorFlag === false ? true : false;
@@ -138,6 +139,7 @@ smoothShadeBtn.addEventListener('click', e => {
   if (magicColorFlag) {
     magicColorFlag = false;
     magicSketchBtn.classList.remove('active-control');
+    magicSketchBtn.textContent = 'Magic Sketch off';
     // retrive shading to the previous color
     pixelColor = colorPicker.value;
   }
