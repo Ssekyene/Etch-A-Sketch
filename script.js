@@ -22,14 +22,17 @@ const xResolutionValue = document.querySelector('#xResolutionValue');
 const yResolutionValue = document.querySelector('#yResolutionValue');
 const clearBtn = document.querySelector('#clearBtn');
 const eraserToggler = document.querySelector('#eraserToggler');
-const magicSketcher = document.querySelector('#magicSketcher');
+const magicSketchBtn = document.querySelector('#magicSketcher');
+const smoothShadeBtn = document.querySelector('#smoothShading');
 
 let magicColorFlag = false;
 let pixelColor = colorPicker.value;
+let smoothShadeFlag = false;
+let previousPixelColor = '';
+// let opacity = 0.1;
 
 
 createGrid(resolutionInput.value);
-
 const pixels = document.querySelectorAll('.col');
 
 // pick the mousedown event through event bubbling
@@ -110,33 +113,73 @@ eraserToggler.addEventListener('click', e => {
 });
 
 
-magicSketcher.addEventListener('click', e => {
-  // toggle magic sketch activator flag
+magicSketchBtn.addEventListener('click', e => {
+  // first deactivate the smooth shading effect if its on
+  if (smoothShadeFlag) {
+    smoothShadeFlag = false;
+    smoothShadeBtn.classList.remove('active-control');
+  }
+  // toggle magic sketching
   magicColorFlag = magicColorFlag === false ? true : false;
-  magicSketcher.classList.toggle('active-control');
-  // set sketching to default when magic flag is off
+  magicSketchBtn.classList.toggle('active-control');
+  // when the magic color feature is off
   if (!magicColorFlag) {
-    magicSketcher.textContent = 'Magic Sketch off';
-    setPixelColorToDefault();
-    colorPicker.value = pixelColor;
+    magicSketchBtn.textContent = 'Magic Sketch off';
+    // retrive shading to the previous color
+    pixelColor = colorPicker.value;
 
   } else {
-    magicSketcher.textContent = 'Magic Sketch on';
+    magicSketchBtn.textContent = 'Magic Sketch on';
   }
 });
+
+smoothShadeBtn.addEventListener('click', e => {
+  // first deactivate magic color effect if its on
+  if (magicColorFlag) {
+    magicColorFlag = false;
+    magicSketchBtn.classList.remove('active-control');
+    // retrive shading to the previous color
+    pixelColor = colorPicker.value;
+  }
+  // toggle smooth shading
+  smoothShadeFlag = smoothShadeFlag === false ? true : false;
+  smoothShadeBtn.classList.toggle('active-control');
+  // apply button state
+  if (smoothShadeFlag) {
+    smoothShadeBtn.textContent = 'Smooth Shading on';
+  } else {
+    smoothShadeBtn.textContent = 'Smooth Shading off';
+  }
+
+
+});
+
 /** END GLOBAL SCOPE **/
 
 
 function shadeOnMousedown(e) {
   // 0 represents the left button
   if (e.button === 0) {
+    const pixelElem = e.target;
     e.preventDefault();
     if (magicColorFlag) {
       setRandomPixelColor();
-      setPixelFillColor(e.target, pixelColor);
-    } else {
-      setPixelFillColor(e.target, pixelColor);
+    } else if (smoothShadeFlag) {
+      // if the pixel is not visited yet give it 10% opacity
+      if (pixelElem.style.opacity === '') {
+        pixelElem.style.opacity = 0.1;
+      } else {
+        // get the current opacity
+        let opacity = +pixelElem.style.opacity;
+        if (opacity < 1) {  // maximum opacity is 100%
+          // update the current opacity by adding 10%
+          opacity = opacity + 0.1;
+          pixelElem.style.opacity = opacity;
+        }
+
+      }
     }
+    setPixelFillColor(pixelElem, pixelColor);
   }
 
 }
@@ -144,12 +187,24 @@ function shadeOnMousedown(e) {
 function shadeOnHoverWithLeftButtonDown (e) {
   // 1 represents the left button when using the `buttons` (not `button`) property
   if (e.buttons === 1) {
+    const pixelElem = e.target;
     if (magicColorFlag) {
       setRandomPixelColor();
-      setPixelFillColor(e.target, pixelColor);
-    } else {
-      setPixelFillColor(e.target, pixelColor);
+    } else if (smoothShadeFlag) {
+      // if the pixel is not visited yet give it 10% opacity
+      if (pixelElem.style.opacity === '') {
+        pixelElem.style.opacity = 0.1;
+      } else {
+        // get the current opacity
+        let opacity = +pixelElem.style.opacity;
+        if (opacity < 1) { // maximum opacity is 100%
+          // update the current opacity by adding 10%
+          opacity = opacity + 0.1;
+          pixelElem.style.opacity = opacity;
+        }
+      }
     }
+    setPixelFillColor(pixelElem, pixelColor);
   }
 }
 
@@ -187,7 +242,7 @@ function erasePixel(pixelElem) {
 
 
 function setPixelFillColor (pixelElem, fillColor) {
-    pixelElem.style.backgroundColor = fillColor;
+  pixelElem.style.backgroundColor = fillColor;
 }
 
 
@@ -201,6 +256,3 @@ function setRandomPixelColor() {
   pixelColor = `rgb(${r}, ${g}, ${b})`;
 }
 
-function setPixelColorToDefault() {
-  pixelColor = '#000000';
-}
