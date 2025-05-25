@@ -10,5 +10,7 @@ This is a simple Etch-A-Sketch simulation using vanilla JavaScript, HTML, and CS
 - Smooth shading effect mode
 - Random color shading effect mode
 
+> ❗ **Important:** This sketch pad is designed to be used on desktop browsers. It may not work as intended on mobile devices due to the nature of mouse events.
+
 ## References
 - https://en.wikipedia.org/wiki/Etch_A_Sketch
